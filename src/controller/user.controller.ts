@@ -26,21 +26,26 @@ export class UserController {
   async registerUser(@Body() user: RegisterUserDTO) {
     delete user.password_confirm;
     await this.userService.createUser(user);
-    return { code: 200, message: 'OK', data: user };
+    return { success: true, message: 'OK' };
   }
 
   @Post('/update')
   @Validate()
   async updateUser(@Body() user: UpdateUserDTO) {
     await this.userService.updateUser(user);
-    return { success: true, message: 'OK', data: user };
+    return { success: true, message: 'OK' };
   }
 
   @Post('/updatePassword')
   @Validate()
   async updatePassword(@Body() user: UpdateUserPasswordDTO) {
+    const findUser = await this.userService.getUser(user.id);
+    if (findUser.password !== user.old_password) {
+      return { success: false, message: 'password is wrong!' };
+    }
+    delete user.old_password;
     delete user.password_confirm;
     await this.userService.updateUser(user);
-    return { success: true, message: 'OK', data: user };
+    return { success: true, message: 'OK' };
   }
 }

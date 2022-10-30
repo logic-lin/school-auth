@@ -46,21 +46,24 @@ export class User {
       this.password = encryptPassword(this.password);
     }
   }
-
   @Column({
-    unique: true,
+    nullable: true,
   })
   id_card?: string;
 
   @Column({
-    unique: true,
+    nullable: true,
   })
   student_card?: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   name?: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   certificate?: string;
 
   @Column({

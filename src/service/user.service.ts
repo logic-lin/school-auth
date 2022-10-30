@@ -19,6 +19,12 @@ export class UserService {
     return await this.userModel.update(id, user);
   }
 
+  async getUser(id: string) {
+    return await this.userModel.findOne({
+      where: { id },
+    });
+  }
+
   async createUser(user: RegisterUserDTO) {
     return await this.userModel.save(user);
   }

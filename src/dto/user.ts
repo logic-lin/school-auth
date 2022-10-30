@@ -20,7 +20,7 @@ export class RegisterUserDTO {
   password: string;
 
   // 密码
-  @Rule(RuleType.ref('password'))
+  @Rule(RuleType.string().required())
   password_confirm: string;
 
   // 手机号
@@ -64,8 +64,16 @@ export class UpdateUserDTO {
 }
 
 export class UpdateUserPasswordDTO {
-  @Rule(RuleType.number().required())
+  @Rule(RuleType.string().required())
   id: string;
+
+  @Rule(
+    RuleType.string()
+      .min(Password_Min_Length)
+      .max(Password_Max_Length)
+      .required()
+  )
+  old_password: string;
 
   // 密码
   @Rule(
@@ -77,6 +85,6 @@ export class UpdateUserPasswordDTO {
   password: string;
 
   // 密码
-  @Rule(RuleType.ref('password'))
+  @Rule(RuleType.equal(RuleType.ref('password')))
   password_confirm: string;
 }
