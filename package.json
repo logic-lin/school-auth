@@ -9,13 +9,16 @@
     "@midwayjs/decorator": "^3.0.0",
     "@midwayjs/i18n": "^3.5.3",
     "@midwayjs/info": "^3.0.0",
+    "@midwayjs/jwt": "^3.7.1",
     "@midwayjs/koa": "^3.0.0",
     "@midwayjs/logger": "^2.14.0",
+    "@midwayjs/passport": "^3.7.1",
     "@midwayjs/static-file": "^3.5.3",
     "@midwayjs/typeorm": "^3.5.3",
     "@midwayjs/validate": "^3.5.3",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
+    "passport-jwt": "^4.0.0",
     "typeorm": "^0.3.10"
   },
   "devDependencies": {

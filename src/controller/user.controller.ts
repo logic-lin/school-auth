@@ -8,6 +8,8 @@ import {
   LoginDTO,
 } from '../dto/user';
 import { UserService } from '../service/user.service';
+import { JwtService } from '@midwayjs/jwt';
+import { JwtPassportMiddleware } from '../middleware/jwt.middleware';
 
 @Controller('/api/user')
 export class UserController {
@@ -17,9 +19,12 @@ export class UserController {
   @Inject()
   userService: UserService;
 
-  @Get('/test')
+  @Inject()
+  jwt: JwtService;
+
+  @Get('/test', { middleware: [JwtPassportMiddleware] })
   async test() {
-    return { code: 200, message: 'OK', data: '123' };
+    return { code: 200, message: 'OK', data: this.ctx.state };
   }
 
   @Post('/register')
@@ -43,22 +48,30 @@ export class UserController {
         message: 'password is wrong or user is not exist!',
       };
     }
-    return { success: true, message: 'OK', data: findUser };
+    return {
+      success: true,
+      message: 'OK',
+      data: findUser,
+      t: await this.jwt.sign({ id: findUser.id }),
+    };
   }
 
-  @Get('/getUserInfo')
+  @Get('/getUserInfo', { middleware: [JwtPassportMiddleware] })
   async getUserInfo() {
-    return { success: true, message: 'OK' };
+    const id = this.ctx.state.user.id;
+    const useInfo = await this.userService.getUserById(id);
+    delete useInfo.password;
+    return { success: true, message: 'OK', data: useInfo };
   }
 
-  @Post('/update')
+  @Post('/update', { middleware: [JwtPassportMiddleware] })
   @Validate()
   async updateUser(@Body() user: UpdateUserDTO) {
     await this.userService.updateUser(user);
     return { success: true, message: 'OK' };
   }
 
-  @Post('/updatePassword')
+  @Post('/updatePassword', { middleware: [JwtPassportMiddleware] })
   @Validate()
   async updatePassword(@Body() user: UpdateUserPasswordDTO) {
     const findUser = await this.userService.getUserById(user.id);

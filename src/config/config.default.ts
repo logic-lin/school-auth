@@ -8,6 +8,13 @@ export default {
   koa: {
     port: 7001,
   },
+  jwt: {
+    secret: '114514233123', // fs.readFileSync('xxxxx.key')
+    expiresIn: '1d', // https://github.com/vercel/ms
+  },
+  passport: {
+    session: false,
+  },
   typeorm: {
     dataSource: {
       default: {
