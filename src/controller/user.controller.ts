@@ -5,6 +5,7 @@ import {
   UpdateUserDTO,
   RegisterUserDTO,
   UpdateUserPasswordDTO,
+  LoginDTO,
 } from '../dto/user';
 import { UserService } from '../service/user.service';
 
@@ -29,6 +30,27 @@ export class UserController {
     return { success: true, message: 'OK' };
   }
 
+  @Post('/login')
+  @Validate()
+  async login(@Body() user: LoginDTO) {
+    const findUser = await this.userService.getUserByAccount(
+      user.account,
+      user.password
+    );
+    if (!findUser) {
+      return {
+        success: false,
+        message: 'password is wrong or user is not exist!',
+      };
+    }
+    return { success: true, message: 'OK', data: findUser };
+  }
+
+  @Get('/getUserInfo')
+  async getUserInfo() {
+    return { success: true, message: 'OK' };
+  }
+
   @Post('/update')
   @Validate()
   async updateUser(@Body() user: UpdateUserDTO) {
@@ -39,7 +61,7 @@ export class UserController {
   @Post('/updatePassword')
   @Validate()
   async updatePassword(@Body() user: UpdateUserPasswordDTO) {
-    const findUser = await this.userService.getUser(user.id);
+    const findUser = await this.userService.getUserById(user.id);
     if (findUser.password !== user.old_password) {
       return { success: false, message: 'password is wrong!' };
     }

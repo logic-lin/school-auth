@@ -19,10 +19,20 @@ export class UserService {
     return await this.userModel.update(id, user);
   }
 
-  async getUser(id: string) {
-    return await this.userModel.findOne({
-      where: { id },
+  async getUserByAccount(account: string, password: string) {
+    const findUser = await this.userModel.findOne({
+      where: [
+        { phone: account, password },
+        { student_card: account, password },
+        { email: account, password },
+      ],
     });
+    if (findUser && findUser.password) delete findUser.password;
+    return findUser;
+  }
+
+  async getUserById(id: string) {
+    return await this.userModel.findOne({ where: { id } });
   }
 
   async createUser(user: RegisterUserDTO) {

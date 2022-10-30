@@ -9,6 +9,21 @@ import {
   Student_Card_Length,
 } from './constrant/user';
 
+export class LoginDTO {
+  // 手机号/学号/邮箱
+  @Rule(RuleType.string().required())
+  account: string;
+
+  // 密码
+  @Rule(
+    RuleType.string()
+      .min(Password_Min_Length)
+      .max(Password_Max_Length)
+      .required()
+  )
+  password: string;
+}
+
 export class RegisterUserDTO {
   // 密码
   @Rule(

@@ -53,6 +53,7 @@ export class User {
 
   @Column({
     nullable: true,
+    unique: true,
   })
   student_card?: string;
 
