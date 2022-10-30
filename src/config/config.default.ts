@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { MidwayConfig } from '@midwayjs/core';
 import { User } from '../entity/user';
 
@@ -27,7 +28,7 @@ export default {
         host: 'localhost',
         port: 3306,
         username: 'root',
-        password: '12345677',
+        password: '',
         database: 'develop',
         synchronize: true, // 如果第一次使用，不存在表，有同步的需求可以写 true
         logging: false,
