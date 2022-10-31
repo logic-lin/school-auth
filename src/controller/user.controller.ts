@@ -48,11 +48,11 @@ export class UserController {
         message: 'password is wrong or user is not exist!',
       };
     }
+    this.ctx.cookies.set('token', await this.jwt.sign({ id: findUser.id }));
     return {
       success: true,
       message: 'OK',
       data: findUser,
-      t: await this.jwt.sign({ id: findUser.id }),
     };
   }
 
