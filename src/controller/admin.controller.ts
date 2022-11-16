@@ -43,7 +43,7 @@ export class UserController {
     return { success: true, message: 'OK' };
   }
 
-  @AllowRole([Role.Super])
+  @AllowRole([Role.Admin, Role.Super])
   @Get('/test', { middleware: [JwtPassportMiddleware] })
   @Validate()
   async test() {

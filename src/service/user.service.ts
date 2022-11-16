@@ -6,7 +6,7 @@ import {
   UpdateUserDTO,
   UpdateUserPasswordDTO,
 } from '../dto/user';
-import { User } from '../entity/user';
+import { User, VerifyStatus } from '../entity/user';
 
 @Provide()
 export class UserService {
@@ -15,7 +15,7 @@ export class UserService {
 
   async updateUser(
     user:
-      | (UpdateUserDTO & { id: string })
+      | (UpdateUserDTO & { id: string; verify_status?: VerifyStatus })
       | (UpdateUserPasswordDTO & { id: string })
   ) {
     const id = user.id;

@@ -11,6 +11,7 @@ import { NotFoundFilter } from './filter/notfound.filter';
 import { ReportMiddleware } from './middleware/report.middleware';
 import * as passport from '@midwayjs/passport';
 import * as jwt from '@midwayjs/jwt';
+import * as upload from '@midwayjs/upload';
 
 @Configuration({
   imports: [
@@ -20,6 +21,7 @@ import * as jwt from '@midwayjs/jwt';
     orm,
     jwt,
     passport,
+    upload,
     {
       component: info,
       enabledEnvironment: ['local'],

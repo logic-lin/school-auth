@@ -1,4 +1,11 @@
-import { Inject, Controller, Post, Body, Get } from '@midwayjs/decorator';
+import {
+  Inject,
+  Controller,
+  Post,
+  Body,
+  Get,
+  Files,
+} from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import Validate from '../util/validateEn';
 import {
@@ -10,6 +17,7 @@ import {
 import { UserService } from '../service/user.service';
 import { JwtService } from '@midwayjs/jwt';
 import { JwtPassportMiddleware } from '../middleware/jwt.middleware';
+import { VerifyStatus } from '../entity/user';
 
 @Controller('/api/user')
 export class UserController {
@@ -25,6 +33,16 @@ export class UserController {
   @Get('/test', { middleware: [JwtPassportMiddleware] })
   async test() {
     return { code: 200, message: 'OK', data: this.ctx.state };
+  }
+
+  @Post('/upload')
+  async upload(@Files() files) {
+    const file = files?.[0];
+    const url = 'static/' + file.data.match(/\\([^\\]*?)$/)[1];
+    return {
+      url,
+      files,
+    };
   }
 
   @Post('/register')
@@ -65,17 +83,23 @@ export class UserController {
   @Get('/getUserInfo', { middleware: [JwtPassportMiddleware] })
   async getUserInfo() {
     const id = this.ctx.state.user.id;
-    const useInfo = await this.userService.getUserById(id);
-    delete useInfo.password;
-    return { success: true, message: 'OK', data: useInfo };
+    const userInfo = await this.userService.getUserById(id);
+    delete userInfo.password;
+    return { success: true, message: 'OK', data: userInfo };
   }
 
   @Post('/update', { middleware: [JwtPassportMiddleware] })
   @Validate()
   async updateUser(@Body() user: UpdateUserDTO) {
     const id = this.ctx.state.user.id;
-    await this.userService.updateUser({ id, ...user });
-    return { success: true, message: 'OK' };
+    await this.userService.updateUser({
+      id,
+      ...user,
+      verify_status: VerifyStatus.Pending,
+    });
+    const userInfo = await this.userService.getUserById(id);
+    delete userInfo.password;
+    return { success: true, message: 'OK', data: userInfo };
   }
 
   @Post('/updatePassword', { middleware: [JwtPassportMiddleware] })

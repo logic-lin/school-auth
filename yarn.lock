@@ -874,10 +874,10 @@
   dependencies:
     "@midwayjs/cookies" "^1.0.2"
 
-"@midwayjs/static-file@^3.5.3":
-  "integrity" "sha512-UDAogifRm5TwO365OeNJjracSrzn9CvorjbDzNIXyx8myuU/ZCcdErS2EH23wZMxhyN0y3LE7IZ5m+IPYYshfg=="
-  "resolved" "https://registry.npmjs.org/@midwayjs/static-file/-/static-file-3.7.0.tgz"
-  "version" "3.7.0"
+"@midwayjs/static-file@^3.7.3":
+  "integrity" "sha512-W9RcT1sQdt0Pz3+9VDG9yvPbeHAqDv+am/QwSHpcUYSk0M+9+KtI3O04Gt/EAhe8h0YcFfjA05jqxnaex03+Gg=="
+  "resolved" "https://registry.npmjs.org/@midwayjs/static-file/-/static-file-3.7.3.tgz"
+  "version" "3.7.3"
   dependencies:
     "koa-range" "0.3.0"
     "koa-static-cache" "5.1.4"
@@ -887,6 +887,13 @@
   "integrity" "sha512-crzLy7z3eDyJhZTsCQ3e6+fJDM04D8wAYSzrbP+aMbaU/qsvsYxRlLvM3Bw8cGtuQfYb0s9lj3mEvGCELGGKEA=="
   "resolved" "https://registry.npmjs.org/@midwayjs/typeorm/-/typeorm-3.7.0.tgz"
   "version" "3.7.0"
+
+"@midwayjs/upload@^3.7.3":
+  "integrity" "sha512-2W1DwOHevzWMZzRrQZv+ovX4fxsU0RvoC+vdjR0CGRG0TRlIun5nxtN51mkaU8tjrN+iyUMuAOZNesY2jUWjTA=="
+  "resolved" "https://registry.npmjs.org/@midwayjs/upload/-/upload-3.7.3.tgz"
+  "version" "3.7.3"
+  dependencies:
+    "raw-body" "2.5.1"
 
 "@midwayjs/validate@^3.5.3":
   "integrity" "sha512-B+iz5FYltJB6z+ElH4MJvm814DDvkywmdbFnFSl7Not0RLtOW5Hp9Y3d51b0KCv58g4tnfgdD1ja+d1S40EpUQ=="
