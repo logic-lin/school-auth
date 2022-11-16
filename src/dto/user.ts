@@ -48,9 +48,6 @@ export class RegisterUserDTO {
 }
 
 export class UpdateUserDTO {
-  // user id
-  @Rule(RuleType.string().required())
-  id: string;
   // 姓名
   @Rule(RuleType.string().max(Name_Max_Length).required())
   name: string;
@@ -79,9 +76,6 @@ export class UpdateUserDTO {
 }
 
 export class UpdateUserPasswordDTO {
-  @Rule(RuleType.string().required())
-  id: string;
-
   @Rule(
     RuleType.string()
       .min(Password_Min_Length)

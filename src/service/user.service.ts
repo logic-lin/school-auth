@@ -13,7 +13,11 @@ export class UserService {
   @InjectEntityModel(User)
   userModel: Repository<User>;
 
-  async updateUser(user: UpdateUserDTO | UpdateUserPasswordDTO) {
+  async updateUser(
+    user:
+      | (UpdateUserDTO & { id: string })
+      | (UpdateUserPasswordDTO & { id: string })
+  ) {
     const id = user.id;
     delete user.id;
     return await this.userModel.update(id, user);

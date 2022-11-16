@@ -30,9 +30,15 @@ export class UserController {
   @Post('/register')
   @Validate()
   async registerUser(@Body() user: RegisterUserDTO) {
+    console.log('test');
     delete user.password_confirm;
-    await this.userService.createUser(user);
-    return { success: true, message: 'OK' };
+    const data = await this.userService.createUser(user);
+    return {
+      success: true,
+      message: 'OK',
+      data,
+      token: await this.jwt.sign({ id: data.id, role: data.role }),
+    };
   }
 
   @Post('/login')
@@ -48,11 +54,11 @@ export class UserController {
         message: 'password is wrong or user is not exist!',
       };
     }
-    this.ctx.cookies.set('token', await this.jwt.sign({ id: findUser.id }));
     return {
       success: true,
       message: 'OK',
       data: findUser,
+      token: await this.jwt.sign({ id: findUser.id, role: findUser.role }),
     };
   }
 
@@ -67,20 +73,22 @@ export class UserController {
   @Post('/update', { middleware: [JwtPassportMiddleware] })
   @Validate()
   async updateUser(@Body() user: UpdateUserDTO) {
-    await this.userService.updateUser(user);
+    const id = this.ctx.state.user.id;
+    await this.userService.updateUser({ id, ...user });
     return { success: true, message: 'OK' };
   }
 
   @Post('/updatePassword', { middleware: [JwtPassportMiddleware] })
   @Validate()
   async updatePassword(@Body() user: UpdateUserPasswordDTO) {
-    const findUser = await this.userService.getUserById(user.id);
+    const id = this.ctx.state.user.id;
+    const findUser = await this.userService.getUserById(id);
     if (findUser.password !== user.old_password) {
       return { success: false, message: 'password is wrong!' };
     }
     delete user.old_password;
     delete user.password_confirm;
-    await this.userService.updateUser(user);
+    await this.userService.updateUser({ id, ...user });
     return { success: true, message: 'OK' };
   }
 }

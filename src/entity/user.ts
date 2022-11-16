@@ -21,6 +21,12 @@ export enum VerifyStatus {
   Pending = 3,
 }
 
+export enum Role {
+  Super = 1,
+  Admin = 2,
+  Normal = 3,
+}
+
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -80,6 +86,13 @@ export class User {
     nullable: true,
   })
   verify_status?: VerifyStatus;
+
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.Normal,
+  })
+  role: Role;
 
   @CreateDateColumn()
   create_time?: Date;
