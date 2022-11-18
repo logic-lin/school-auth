@@ -1,12 +1,8 @@
 import { Provide } from '@midwayjs/decorator';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  RegisterUserDTO,
-  UpdateUserDTO,
-  UpdateUserPasswordDTO,
-} from '../dto/user';
-import { Role, User, VerifyStatus } from '../entity/user';
+import { RegisterUserDTO } from '../dto/user';
+import { Role, User } from '../entity/user';
 import { encryptPassword } from '../util/encrypt';
 
 @Provide()
@@ -14,11 +10,7 @@ export class UserService {
   @InjectEntityModel(User)
   userModel: Repository<User>;
 
-  async updateUser(
-    user:
-      | (Partial<UpdateUserDTO> & { id: string; verify_status?: VerifyStatus })
-      | (Partial<UpdateUserPasswordDTO> & { id: string })
-  ) {
+  async updateUser(user: Omit<Partial<User>, 'id'> & { id: string }) {
     const id = user.id;
     delete user.id;
     return await this.userModel.update(id, user);

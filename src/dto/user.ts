@@ -34,10 +34,6 @@ export class RegisterUserDTO {
   )
   password: string;
 
-  // 密码
-  @Rule(RuleType.string().required())
-  password_confirm: string;
-
   // 手机号
   @Rule(RuleType.string().length(Phone_Length).required())
   phone: string;
@@ -92,8 +88,4 @@ export class UpdateUserPasswordDTO {
       .required()
   )
   password: string;
-
-  // 密码
-  @Rule(RuleType.equal(RuleType.ref('password')))
-  password_confirm: string;
 }

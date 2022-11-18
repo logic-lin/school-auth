@@ -57,7 +57,6 @@ export class UserController {
   @Validate()
   async registerUser(@Body() user: RegisterUserDTO) {
     console.log('test');
-    delete user.password_confirm;
     user.password = encryptPassword(user.password);
     const data = await this.userService.createUser(user);
     return {
@@ -131,7 +130,6 @@ export class UserController {
       return { success: false, message: 'password is wrong!' };
     }
     delete user.old_password;
-    delete user.password_confirm;
     await this.userService.updateUser({ id, ...user });
     return { success: true, message: 'OK' };
   }

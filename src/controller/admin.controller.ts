@@ -16,7 +16,12 @@ import { JwtPassportMiddleware } from '../middleware/jwt.middleware';
 import { AuthGuard } from '../guard/auth.guard';
 import { AllowRole } from '../decorator/role.decorator';
 import { QueryPaginationDTO } from '../dto/common';
-import { VerifyAccountDTO } from '../dto/admin';
+import {
+  UpdateAccountPasswordDTO,
+  UpdateAccountRoleDTO,
+  VerifyAccountDTO,
+} from '../dto/admin';
+import { encryptPassword } from '../util/encrypt';
 
 @UseGuard(AuthGuard)
 @Controller('/api/admin')
@@ -64,6 +69,33 @@ export class UserController {
         page,
         size,
       },
+    };
+  }
+
+  @AllowRole([Role.Super])
+  @Post('/updateAccountRole', { middleware: [JwtPassportMiddleware] })
+  @Validate()
+  async updateAccountRole(@Body() data: UpdateAccountRoleDTO) {
+    const { id, role } = data;
+    await this.userService.updateUser({ id, role });
+    return {
+      success: true,
+      message: 'OK',
+    };
+  }
+
+  @AllowRole([Role.Super])
+  @Post('/updateAccountPassword', { middleware: [JwtPassportMiddleware] })
+  @Validate()
+  async UpdateAccountPassword(@Body() data: UpdateAccountPasswordDTO) {
+    const { id, password } = data;
+    await this.userService.updateUser({
+      id,
+      password: encryptPassword(password),
+    });
+    return {
+      success: true,
+      message: 'OK',
     };
   }
 
