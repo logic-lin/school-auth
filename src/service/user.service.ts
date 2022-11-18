@@ -6,7 +6,8 @@ import {
   UpdateUserDTO,
   UpdateUserPasswordDTO,
 } from '../dto/user';
-import { User, VerifyStatus } from '../entity/user';
+import { Role, User, VerifyStatus } from '../entity/user';
+import { encryptPassword } from '../util/encrypt';
 
 @Provide()
 export class UserService {
@@ -53,5 +54,36 @@ export class UserService {
       this.userModel.createQueryBuilder().getCount(),
     ]);
     return { data, total };
+  }
+  async initSuper() {
+    const rootEmail = 'root@super.com';
+    const rootPhone = '13823608739';
+    const rootPassowrd = encryptPassword('1234567890');
+    const findSuper = await this.userModel.findOne({
+      where: {
+        email: rootEmail,
+        phone: rootPhone,
+      },
+    });
+    if (!findSuper) {
+      await this.userModel.save({
+        email: rootEmail,
+        phone: rootPhone,
+        password: rootPassowrd,
+        role: Role.Super,
+      });
+    } else {
+      await this.userModel.update(findSuper.id, {
+        email: rootEmail,
+        phone: rootPhone,
+        password: rootPassowrd,
+        role: Role.Super,
+      });
+    }
+    return {
+      email: rootEmail,
+      phone: rootPhone,
+      password: '1234567890',
+    };
   }
 }

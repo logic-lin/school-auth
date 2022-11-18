@@ -1,13 +1,10 @@
 import {
-  BeforeInsert,
-  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { encryptPassword } from '../util/encrypt';
 
 export enum Gender {
   Man = 1,
@@ -45,13 +42,6 @@ export class User {
   @Column()
   password: string;
 
-  @BeforeInsert()
-  @BeforeUpdate()
-  hashPassword() {
-    if (this.password) {
-      this.password = encryptPassword(this.password);
-    }
-  }
   @Column({
     nullable: true,
   })

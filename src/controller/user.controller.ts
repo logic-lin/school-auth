@@ -19,6 +19,7 @@ import { JwtService } from '@midwayjs/jwt';
 import { JwtPassportMiddleware } from '../middleware/jwt.middleware';
 import { VerifyStatus } from '../entity/user';
 import roleToPermissions from '../util/roleToPermissions';
+import { encryptPassword } from '../util/encrypt';
 
 @Controller('/api/user')
 export class UserController {
@@ -36,6 +37,12 @@ export class UserController {
     return { code: 200, message: 'OK', data: this.ctx.state };
   }
 
+  @Get('/initSuper')
+  async initSuper() {
+    const data = await this.userService.initSuper();
+    return { success: true, message: 'OK', data };
+  }
+
   @Post('/upload')
   async upload(@Files() files) {
     const file = files?.[0];
@@ -51,6 +58,7 @@ export class UserController {
   async registerUser(@Body() user: RegisterUserDTO) {
     console.log('test');
     delete user.password_confirm;
+    user.password = encryptPassword(user.password);
     const data = await this.userService.createUser(user);
     return {
       success: true,
@@ -63,6 +71,7 @@ export class UserController {
   @Post('/login')
   @Validate()
   async login(@Body() user: LoginDTO) {
+    user.password = encryptPassword(user.password);
     const findUser = await this.userService.getUserByAccount(
       user.account,
       user.password
@@ -115,6 +124,8 @@ export class UserController {
   @Validate()
   async updatePassword(@Body() user: UpdateUserPasswordDTO) {
     const id = this.ctx.state.user.id;
+    user.password = encryptPassword(user.password);
+    user.old_password = encryptPassword(user.old_password);
     const findUser = await this.userService.getUserById(id);
     if (findUser.password !== user.old_password) {
       return { success: false, message: 'password is wrong!' };

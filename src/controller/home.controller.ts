@@ -10,6 +10,7 @@ export class HomeController {
   async home(): Promise<string> {
     return 'Hello Midwayjs!';
   }
+
   // @Post('/upload')
   // async upload(@Files() files, @Fields() fields) {
   //   /*
