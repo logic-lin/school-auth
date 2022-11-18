@@ -18,6 +18,7 @@ import { UserService } from '../service/user.service';
 import { JwtService } from '@midwayjs/jwt';
 import { JwtPassportMiddleware } from '../middleware/jwt.middleware';
 import { VerifyStatus } from '../entity/user';
+import roleToPermissions from '../util/roleToPermissions';
 
 @Controller('/api/user')
 export class UserController {
@@ -54,7 +55,7 @@ export class UserController {
     return {
       success: true,
       message: 'OK',
-      data,
+      data: { ...data, permissions: roleToPermissions(data) },
       token: await this.jwt.sign({ id: data.id, role: data.role }),
     };
   }
@@ -75,7 +76,7 @@ export class UserController {
     return {
       success: true,
       message: 'OK',
-      data: findUser,
+      data: { ...findUser, permissions: roleToPermissions(findUser) },
       token: await this.jwt.sign({ id: findUser.id, role: findUser.role }),
     };
   }
@@ -85,7 +86,11 @@ export class UserController {
     const id = this.ctx.state.user.id;
     const userInfo = await this.userService.getUserById(id);
     delete userInfo.password;
-    return { success: true, message: 'OK', data: userInfo };
+    return {
+      success: true,
+      message: 'OK',
+      data: { ...userInfo, permissions: roleToPermissions(userInfo) },
+    };
   }
 
   @Post('/update', { middleware: [JwtPassportMiddleware] })
@@ -99,7 +104,11 @@ export class UserController {
     });
     const userInfo = await this.userService.getUserById(id);
     delete userInfo.password;
-    return { success: true, message: 'OK', data: userInfo };
+    return {
+      success: true,
+      message: 'OK',
+      data: { ...userInfo, permissions: roleToPermissions(userInfo) },
+    };
   }
 
   @Post('/updatePassword', { middleware: [JwtPassportMiddleware] })

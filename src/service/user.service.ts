@@ -15,8 +15,8 @@ export class UserService {
 
   async updateUser(
     user:
-      | (UpdateUserDTO & { id: string; verify_status?: VerifyStatus })
-      | (UpdateUserPasswordDTO & { id: string })
+      | (Partial<UpdateUserDTO> & { id: string; verify_status?: VerifyStatus })
+      | (Partial<UpdateUserPasswordDTO> & { id: string })
   ) {
     const id = user.id;
     delete user.id;
@@ -41,5 +41,17 @@ export class UserService {
 
   async createUser(user: RegisterUserDTO) {
     return await this.userModel.save(user);
+  }
+
+  async getUserList(page: number, size: number) {
+    const [data, total] = await Promise.all([
+      this.userModel
+        .createQueryBuilder()
+        .skip((page - 1) * size)
+        .take(size)
+        .getMany(),
+      this.userModel.createQueryBuilder().getCount(),
+    ]);
+    return { data, total };
   }
 }
