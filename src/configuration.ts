@@ -12,7 +12,7 @@ import { ReportMiddleware } from './middleware/report.middleware';
 import * as passport from '@midwayjs/passport';
 import * as jwt from '@midwayjs/jwt';
 import * as upload from '@midwayjs/upload';
-
+import * as redis from '@midwayjs/redis';
 @Configuration({
   imports: [
     koa,
@@ -22,6 +22,7 @@ import * as upload from '@midwayjs/upload';
     jwt,
     passport,
     upload,
+    redis,
     {
       component: info,
       enabledEnvironment: ['local'],

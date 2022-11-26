@@ -1,14 +1,24 @@
-import { Controller, Get, Inject } from '@midwayjs/decorator';
+import { Context } from '@midwayjs/koa';
+import { Controller, Get, Inject, Query } from '@midwayjs/decorator';
 import { UserService } from '../service/user.service';
 
 @Controller('/home')
 export class HomeController {
+  @Inject()
+  ctx: Context;
+
   @Inject()
   userService: UserService;
 
   @Get('/home')
   async home(): Promise<string> {
     return 'Hello Midwayjs!';
+  }
+
+  @Get('/callback')
+  async callback(@Query() query) {
+    this.ctx.headers['access-control-allow-origin'] = 'http://localhost:7001';
+    return query;
   }
 
   // @Post('/upload')

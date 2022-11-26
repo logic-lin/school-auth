@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { MidwayConfig } from '@midwayjs/core';
 import { join } from 'path';
+import { Application } from '../entity/application';
 import { User } from '../entity/user';
 const uploadWhiteList = ['.jpg', '.png', '.jpeg', '.webp', '.gif', '.bmp', '.wbmp', '.tif']
 export default {
@@ -29,7 +30,7 @@ export default {
         synchronize: true, // 如果第一次使用，不存在表，有同步的需求可以写 true
         logging: false,
         // 配置实体模型 或者 entities: '/entity',
-        entities: [User],
+        entities: [User, Application],
       },
     },
   },
@@ -60,5 +61,13 @@ export default {
     },
     maxAge: 1000 * 60 * 60,
     // ...
+  },
+  redis: {
+    client: {
+      port: 6379, // Redis port
+      host: '127.0.0.1', // Redis host
+      password: '',
+      db: 0,
+    },
   },
 } as MidwayConfig;

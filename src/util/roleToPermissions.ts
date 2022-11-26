@@ -1,5 +1,5 @@
 import { Role, User, VerifyStatus } from '../entity/user';
-const normalPermission = ['manage-userinfo'];
+const normalPermission = ['manage-userinfo', 'manage-application'];
 const adminPermission = ['verify-account'].concat(normalPermission);
 const superPermission = ['manage-account'].concat(adminPermission);
 const verifyUserPermission = ['authorize', 'home'];

@@ -89,3 +89,10 @@ export class UpdateUserPasswordDTO {
   )
   password: string;
 }
+export class allowAuthDTO {
+  @Rule(RuleType.string().required())
+  appid: string;
+
+  @Rule(RuleType.string().required())
+  user_token: string;
+}

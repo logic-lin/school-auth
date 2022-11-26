@@ -56,7 +56,6 @@ export class UserController {
   @Post('/register')
   @Validate()
   async registerUser(@Body() user: RegisterUserDTO) {
-    console.log('test');
     user.password = encryptPassword(user.password);
     const data = await this.userService.createUser(user);
     return {
